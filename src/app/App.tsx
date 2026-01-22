@@ -584,12 +584,12 @@ export default function App() {
   };
 
   return (
-    <div className="flex h-screen bg-gray-50">
+    <div className="flex h-screen bg-gray-50 overflow-hidden">
       <Sidebar activeItem={activeItem} onItemClick={setActiveItem} />
-      
-      <div className="flex-1 flex flex-col overflow-hidden">
-        {/* Sticky Header */}
-        <header className="bg-[#3e454b] border-b border-gray-700 px-8 py-4 flex items-center justify-between sticky top-0 z-10 shadow-lg">
+
+      <div className="flex-1 flex flex-col min-w-0">
+        {/* Header */}
+        <header className="bg-[#3e454b] border-b border-gray-700 px-8 py-4 flex items-center justify-between flex-shrink-0 shadow-lg">
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-lg bg-white flex items-center justify-center p-1.5">

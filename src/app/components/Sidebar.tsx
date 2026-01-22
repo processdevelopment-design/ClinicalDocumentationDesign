@@ -14,14 +14,14 @@ export function Sidebar({ activeItem, onItemClick }: SidebarProps) {
   ];
 
   return (
-    <aside className="w-64 bg-white border-r border-gray-200 h-screen flex flex-col">
+    <aside className="w-64 bg-white border-r border-gray-200 flex flex-col flex-shrink-0">
       <div className="p-6 border-b border-gray-200">
         <div className="flex items-center gap-3 mb-2">
           <img src="https://i.imgur.com/JSNghE3.png" alt="Physiare" style={{ height: '1cm', width: 'auto' }} />
         </div>
         <p className="text-sm text-gray-500">Clinical Documentation</p>
       </div>
-      <nav className="flex-1 p-4">
+      <nav className="flex-1 p-4 overflow-y-auto">
         <ul className="space-y-2">
           {menuItems.map((item) => {
             const Icon = item.icon;

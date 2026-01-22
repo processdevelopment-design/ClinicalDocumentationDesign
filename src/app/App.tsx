@@ -246,6 +246,29 @@ export default function App() {
     
     setClinicalRecords([newRecord, ...clinicalRecords]);
     
+    // Update patient information in Patient Database if changed
+    const patientIndex = patients.findIndex(p => p.patientId === formData.patientId);
+    if (patientIndex !== -1) {
+      const updatedPatients = [...patients];
+      updatedPatients[patientIndex] = {
+        ...updatedPatients[patientIndex],
+        patientName: formData.patientName,
+        dateOfBirth: formData.dateOfBirth,
+        sex: formData.sex,
+        referringPhysician: formData.referringPhysician,
+        prescribedSessions: formData.prescribedSessions,
+        diagnoses: formData.diagnoses.filter(d => d.trim() !== ''),
+        program: formData.caseType,
+        bodyAreasInvolved: formData.selectedBodyAreas,
+        lastEditDate: today,
+      };
+      setPatients(updatedPatients);
+      
+      toast.success('Patient information updated', {
+        description: 'Changes from the evaluation form have been synced to the Patient Database.',
+      });
+    }
+    
     // Generate PDF
     const doc = generateComprehensivePDF(formData);
     doc.save(`${noteCode}.pdf`);

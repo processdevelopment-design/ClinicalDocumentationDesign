@@ -58,6 +58,9 @@ export function CreateModule({
                 <SelectValue placeholder="Choose patient..." />
               </SelectTrigger>
               <SelectContent>
+                <SelectItem value="new-patient">
+                  <span className="font-semibold text-[#b36f49]">+ New Patient</span>
+                </SelectItem>
                 {patients.length === 0 ? (
                   <div className="px-2 py-4 text-sm text-gray-500 text-center">
                     No patients in database. Add a patient
@@ -146,6 +149,18 @@ export function CreateModule({
                 </p>
               </div>
             </div>
+          </div>
+        )}
+        
+        {/* New Patient Info */}
+        {selectedPatient === 'new-patient' && (
+          <div className="mt-6 p-4 bg-green-50 rounded-lg border border-green-200">
+            <h3 className="text-sm font-semibold text-green-800 mb-2">
+              ✓ New Patient - Initial Evaluation Selected
+            </h3>
+            <p className="text-sm text-green-700">
+              Complete the Initial Evaluation form below. The patient profile will be automatically saved to the Patient Database when you submit or save as draft.
+            </p>
           </div>
         )}
 

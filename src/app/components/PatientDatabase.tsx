@@ -13,6 +13,7 @@ export interface Patient {
   referringPhysician: string;
   prescribedSessions: number;
   diagnoses: string[];
+  categoricalDiagnosis?: string;
   program: string;
   bodyAreasInvolved: string[];
   lastEditDate: string;
@@ -39,26 +40,22 @@ export function PatientDatabase({ patients, onAddPatient, onEditPatient, onDelet
     referringPhysician: '',
     prescribedSessions: 0,
     diagnoses: [''],
+    categoricalDiagnosis: '',
     program: '',
     bodyAreasInvolved: [] as string[],
   });
 
   const bodyAreaOptions = [
-    'Cervical Spine',
-    'Thoracic Spine',
-    'Lumbar Spine',
-    'Right Shoulder',
-    'Left Shoulder',
-    'Right Elbow',
-    'Left Elbow',
-    'Right Wrist/Hand',
-    'Left Wrist/Hand',
-    'Right Hip',
-    'Left Hip',
-    'Right Knee',
-    'Left Knee',
-    'Right Ankle/Foot',
-    'Left Ankle/Foot',
+    "Shoulder",
+    "Knee",
+    "Hip",
+    "Upper Back",
+    "Lower Back",
+    "Elbow",
+    "Wrist",
+    "Ankle",
+    "PhysioBeauty",
+    "Overall Conditioning",
   ];
 
   const programOptions = [
@@ -85,6 +82,7 @@ export function PatientDatabase({ patients, onAddPatient, onEditPatient, onDelet
         referringPhysician: patient.referringPhysician,
         prescribedSessions: patient.prescribedSessions,
         diagnoses: patient.diagnoses.length > 0 ? patient.diagnoses : [''],
+        categoricalDiagnosis: patient.categoricalDiagnosis || '',
         program: patient.program,
         bodyAreasInvolved: patient.bodyAreasInvolved,
       });
@@ -98,6 +96,7 @@ export function PatientDatabase({ patients, onAddPatient, onEditPatient, onDelet
         referringPhysician: '',
         prescribedSessions: 0,
         diagnoses: [''],
+        categoricalDiagnosis: '',
         program: '',
         bodyAreasInvolved: [],
       });
@@ -479,10 +478,10 @@ export function PatientDatabase({ patients, onAddPatient, onEditPatient, onDelet
                   </div>
                 </div>
 
-                {/* Body Areas Involved */}
+                {/* Diagnostic Areas */}
                 <div className="md:col-span-2">
                   <Label className="text-sm font-medium text-gray-700 mb-2 block">
-                    Body Area Involved
+                    Diagnostic Areas
                   </Label>
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-2 max-h-48 overflow-y-auto border border-gray-200 rounded-md p-3 bg-gray-50">
                     {bodyAreaOptions.map((area) => (
@@ -662,10 +661,10 @@ export function PatientDatabase({ patients, onAddPatient, onEditPatient, onDelet
                   </div>
                 </div>
 
-                {/* Body Areas Involved */}
+                {/* Diagnostic Areas */}
                 <div className="md:col-span-2">
                   <Label className="text-sm font-medium text-gray-700 mb-2 block">
-                    Body Area Involved
+                    Diagnostic Areas
                   </Label>
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-2 max-h-48 overflow-y-auto border border-gray-200 rounded-md p-3 bg-gray-50">
                     {bodyAreaOptions.map((area) => (

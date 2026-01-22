@@ -10,6 +10,7 @@ export interface FormData {
   referringPhysician: string;
   prescribedSessions: number;
   diagnoses: string[];
+  categoricalDiagnosis: string;
   caseType: string;
   bodyAreas: string[];
   selectedBodyAreas: string[];
@@ -282,15 +283,31 @@ export function generateComprehensivePDF(
   });
   yPosition += 2;
 
-  // Body Areas
+  // Categorical Diagnoses
+  if (formData.categoricalDiagnosis && formData.categoricalDiagnosis.trim()) {
+    doc.setFont(undefined, "bold");
+    doc.text("Categorical Diagnosis:", margin, yPosition);
+    doc.setFont(undefined, "normal");
+    yPosition += lineHeight;
+    doc.text(
+      formData.categoricalDiagnosis,
+      margin + 5,
+      yPosition,
+      { maxWidth: 175 - 5 }
+    );
+    yPosition += lineHeight + 2;
+  }
+
+  // Diagnostic Areas
   doc.setFont(undefined, "bold");
-  doc.text("Body Areas Involved:", margin, yPosition);
+  doc.text("Diagnostic Areas:", margin, yPosition);
   doc.setFont(undefined, "normal");
   yPosition += lineHeight;
   doc.text(
     formData.selectedBodyAreas.join(", "),
     margin + 5,
     yPosition,
+    { maxWidth: 175 - 5 }
   );
   yPosition += lineHeight + 5;
 
@@ -1041,6 +1058,7 @@ export function getSampleFormData(): FormData {
       "Right shoulder impingement syndrome",
       "Rotator cuff tendinitis",
     ],
+    categoricalDiagnosis: "Shoulder Impingement, Rotator Cuff Injury",
     caseType: "Orthopedic Rehabilitation",
     bodyAreas: ["Shoulder", "Upper Back"],
     selectedBodyAreas: ["Shoulder"],

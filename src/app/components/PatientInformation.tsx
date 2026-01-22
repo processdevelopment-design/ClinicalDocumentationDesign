@@ -29,6 +29,30 @@ const BODY_AREAS = [
   "Overall Conditioning",
 ];
 
+const CATEGORICAL_DIAGNOSES = [
+  "Arthroplasty",
+  "Atraumatic / RSI Axial Conditions",
+  "Atraumatic Sprain-Extremity",
+  "Degenerative Spinal Deformities",
+  "Idiopathic Scoliosis",
+  "IV Disk Pathology c Radiculopathy",
+  "IV Disk Pathology s Radiculopathy",
+  "Malignancies",
+  "Neurologic Conditions",
+  "Peripheral Neuropathies",
+  "Rheumatoid Conditions",
+  "RSI Occupational",
+  "Spondylotic Conditions s Radiculopathy",
+  "Tendinopathies",
+  "Traumatic Long Bone Fractures",
+  "Traumatic Short Bone Fractures",
+  "Spondylotic Conditions c Radiculopathy",
+  "Traumatic Spinal Conditions",
+  "Traumatic/ Sports-Related Sprain",
+  "Osteoarthritis",
+  "Unspecified Joint Stiffness",
+];
+
 interface PatientInformationProps {
   formData: FormData;
   setFormData: React.Dispatch<React.SetStateAction<FormData>>;
@@ -74,6 +98,25 @@ export function PatientInformation({
         selectedBodyAreas: [
           ...formData.selectedBodyAreas,
           area,
+        ],
+      });
+    }
+  };
+
+  const toggleCategoricalDiagnosis = (diagnosis: string) => {
+    if (formData.categoricalDiagnoses.includes(diagnosis)) {
+      setFormData({
+        ...formData,
+        categoricalDiagnoses: formData.categoricalDiagnoses.filter(
+          (d) => d !== diagnosis,
+        ),
+      });
+    } else {
+      setFormData({
+        ...formData,
+        categoricalDiagnoses: [
+          ...formData.categoricalDiagnoses,
+          diagnosis,
         ],
       });
     }
@@ -230,6 +273,27 @@ export function PatientInformation({
             <Plus className="w-4 h-4 mr-2" />
             Add Diagnosis
           </Button>
+        </div>
+
+        <div className="space-y-2 md:col-span-2">
+          <Label>Categorical Diagnosis</Label>
+          <Select
+            value={formData.categoricalDiagnosis || ""}
+            onValueChange={(value) =>
+              setFormData({ ...formData, categoricalDiagnosis: value })
+            }
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Select categorical diagnosis" />
+            </SelectTrigger>
+            <SelectContent>
+              {CATEGORICAL_DIAGNOSES.map((diagnosis) => (
+                <SelectItem key={diagnosis} value={diagnosis}>
+                  {diagnosis}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
 
         <div className="space-y-2 md:col-span-2">

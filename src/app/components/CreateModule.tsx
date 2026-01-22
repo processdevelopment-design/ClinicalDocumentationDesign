@@ -36,25 +36,25 @@ export function CreateModule({
   );
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-in fade-in duration-300">
       {/* Selection Card */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-        <h2 className="text-xl font-semibold text-[#3e454b] mb-6">
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8 hover:shadow-md transition-shadow duration-200">
+        <h2 className="text-2xl font-semibold text-[#3e454b] mb-8">
           Create New Record
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Patient Selection */}
-          <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-700">
-              <User className="w-4 h-4 inline mr-2" />
+          <div className="space-y-3">
+            <label className="flex items-center text-sm font-semibold text-gray-700">
+              <User className="w-4 h-4 mr-2 text-[#b36f49]" />
               Select Patient
             </label>
             <Select
               value={selectedPatient}
               onValueChange={onPatientSelect}
             >
-              <SelectTrigger className="w-full">
+              <SelectTrigger className="w-full h-11 hover:border-[#b36f49] focus:border-[#b36f49] transition-colors">
                 <SelectValue placeholder="Choose patient..." />
               </SelectTrigger>
               <SelectContent>
@@ -79,9 +79,9 @@ export function CreateModule({
           </div>
 
           {/* Form Type Selection */}
-          <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-700">
-              <FileText className="w-4 h-4 inline mr-2" />
+          <div className="space-y-3">
+            <label className="flex items-center text-sm font-semibold text-gray-700">
+              <FileText className="w-4 h-4 mr-2 text-[#b36f49]" />
               Type of Form
             </label>
             <Select
@@ -91,7 +91,7 @@ export function CreateModule({
               }
               disabled={!selectedPatient}
             >
-              <SelectTrigger className="w-full">
+              <SelectTrigger className="w-full h-11 hover:border-[#b36f49] focus:border-[#b36f49] transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
                 <SelectValue placeholder="Choose form type..." />
               </SelectTrigger>
               <SelectContent>
@@ -116,32 +116,33 @@ export function CreateModule({
 
         {/* Patient Info Preview */}
         {selectedPatientData && (
-          <div className="mt-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
-            <h3 className="text-sm font-semibold text-gray-700 mb-2">
+          <div className="mt-8 p-5 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl border border-gray-200 shadow-sm animate-in slide-in-from-top-2 duration-300">
+            <h3 className="text-base font-semibold text-[#3e454b] mb-4 flex items-center">
+              <span className="w-1.5 h-5 bg-[#b36f49] rounded-full mr-2"></span>
               Selected Patient Information
             </h3>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-5 text-sm">
               <div>
-                <p className="text-gray-500">Name</p>
-                <p className="font-medium text-gray-900">
+                <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Name</p>
+                <p className="font-semibold text-gray-900">
                   {selectedPatientData.patientName}
                 </p>
               </div>
               <div>
-                <p className="text-gray-500">Patient ID</p>
-                <p className="font-medium text-gray-900">
+                <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Patient ID</p>
+                <p className="font-semibold text-gray-900">
                   {selectedPatientData.patientId}
                 </p>
               </div>
               <div>
-                <p className="text-gray-500">Date of Birth</p>
-                <p className="font-medium text-gray-900">
+                <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Date of Birth</p>
+                <p className="font-semibold text-gray-900">
                   {selectedPatientData.dateOfBirth}
                 </p>
               </div>
               <div>
-                <p className="text-gray-500">Sex</p>
-                <p className="font-medium text-gray-900">
+                <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Sex</p>
+                <p className="font-semibold text-gray-900">
                   {selectedPatientData.sex}
                 </p>
               </div>
@@ -151,16 +152,16 @@ export function CreateModule({
 
         {/* Form Type Preview */}
         {selectedFormType && (
-          <div className="mt-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
-                <FileText className="w-5 h-5 text-blue-600" />
+          <div className="mt-6 p-5 bg-gradient-to-br from-orange-50 to-amber-50 rounded-xl border-2 border-[#b36f49]/20 shadow-sm animate-in slide-in-from-top-2 duration-300">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-full bg-white shadow-sm flex items-center justify-center ring-2 ring-[#b36f49]/20">
+                <FileText className="w-6 h-6 text-[#b36f49]" />
               </div>
-              <div>
-                <h3 className="text-sm font-semibold text-blue-900">
+              <div className="flex-1">
+                <h3 className="text-base font-bold text-[#3e454b] mb-1">
                   {selectedFormType}
                 </h3>
-                <p className="text-xs text-blue-700">
+                <p className="text-sm text-gray-600 leading-relaxed">
                   {selectedFormType === "PT Notes"
                     ? "Document patient treatment session and progress notes"
                     : selectedFormType === "Initial Evaluation"
@@ -175,43 +176,41 @@ export function CreateModule({
 
       {/* Instructions */}
       {(!selectedPatient || !selectedFormType) && (
-        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border border-blue-200 p-6">
-          <h3 className="text-lg font-semibold text-[#3e454b] mb-3">
+        <div className="bg-gradient-to-br from-amber-50 via-orange-50 to-amber-50 rounded-xl border border-orange-200 p-8 shadow-sm animate-in slide-in-from-bottom-2 duration-300">
+          <h3 className="text-xl font-bold text-[#3e454b] mb-6 flex items-center">
+            <span className="w-1.5 h-6 bg-[#b36f49] rounded-full mr-3"></span>
             Getting Started
           </h3>
-          <ol className="space-y-2 text-sm text-gray-700">
-            <li className="flex items-start gap-2">
-              <span className="flex-shrink-0 w-6 h-6 bg-[#b36f49] text-white rounded-full flex items-center justify-center text-xs font-semibold">
+          <ol className="space-y-4 text-sm text-gray-700">
+            <li className="flex items-start gap-3">
+              <span className="flex-shrink-0 w-8 h-8 bg-gradient-to-br from-[#b36f49] to-[#c67f5f] text-white rounded-full flex items-center justify-center text-sm font-bold shadow-sm">
                 1
               </span>
-              <span>
-                Select a patient from the dropdown menu above
+              <span className="pt-1 leading-relaxed">
+                <strong className="text-[#3e454b]">Select a patient</strong> from the dropdown menu above
               </span>
             </li>
-            <li className="flex items-start gap-2">
-              <span className="flex-shrink-0 w-6 h-6 bg-[#b36f49] text-white rounded-full flex items-center justify-center text-xs font-semibold">
+            <li className="flex items-start gap-3">
+              <span className="flex-shrink-0 w-8 h-8 bg-gradient-to-br from-[#b36f49] to-[#c67f5f] text-white rounded-full flex items-center justify-center text-sm font-bold shadow-sm">
                 2
               </span>
-              <span>
-                Choose the type of form you want to create
+              <span className="pt-1 leading-relaxed">
+                <strong className="text-[#3e454b]">Choose the type of form</strong> you want to create
               </span>
             </li>
-            <li className="flex items-start gap-2">
-              <span className="flex-shrink-0 w-6 h-6 bg-[#b36f49] text-white rounded-full flex items-center justify-center text-xs font-semibold">
+            <li className="flex items-start gap-3">
+              <span className="flex-shrink-0 w-8 h-8 bg-gradient-to-br from-[#b36f49] to-[#c67f5f] text-white rounded-full flex items-center justify-center text-sm font-bold shadow-sm">
                 3
               </span>
-              <span>
-                Complete the form and submit to generate a
-                clinical record
+              <span className="pt-1 leading-relaxed">
+                <strong className="text-[#3e454b]">Complete the form</strong> and submit to generate a clinical record
               </span>
             </li>
           </ol>
           {patients.length === 0 && (
-            <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
-              <p className="text-sm text-yellow-800">
-                <strong>Note:</strong> No patients found in the
-                database. Please add a patient in the Patient
-                Database first.
+            <div className="mt-6 p-4 bg-yellow-50 border-l-4 border-yellow-400 rounded-lg">
+              <p className="text-sm text-yellow-800 leading-relaxed">
+                <strong className="font-semibold">Note:</strong> No patients found in the database. Please add a patient in the Patient Database first.
               </p>
             </div>
           )}

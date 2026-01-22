@@ -30,13 +30,13 @@ export function Sidebar({ activeItem, onItemClick }: SidebarProps) {
               <li key={item.id}>
                 <button
                   onClick={() => onItemClick(item.id)}
-                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
                     isActive
-                      ? 'bg-[#b36f49] text-white font-medium'
-                      : 'text-gray-700 hover:bg-gray-50'
+                      ? 'bg-gradient-to-r from-[#b36f49] to-[#c67f5f] text-white font-semibold shadow-md'
+                      : 'text-gray-700 hover:bg-gray-100 hover:shadow-sm'
                   }`}
                 >
-                  <Icon className={`w-5 h-5 ${isActive ? 'text-white' : 'text-gray-500'}`} />
+                  <Icon className={`w-5 h-5 transition-transform duration-200 ${isActive ? 'text-white scale-110' : 'text-gray-500'}`} />
                   <span className="text-sm">{item.label}</span>
                 </button>
               </li>

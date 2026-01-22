@@ -39,40 +39,45 @@ export function ClinicalRecords({ records, onViewRecord, onDownloadPDF, onEditRe
   });
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-in fade-in duration-300">
       {/* Search Bar */}
-      <div className="bg-white rounded-lg shadow-sm p-6">
+      <div className="bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition-shadow duration-200">
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-[#b36f49] w-5 h-5" />
           <Input
             type="text"
             placeholder="Search by name, patient ID, or note code..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10 py-6 text-base"
+            className="pl-12 py-6 text-base rounded-lg border-2 focus:border-[#b36f49] transition-colors"
           />
         </div>
       </div>
 
       {/* Records List */}
-      <div className="bg-white rounded-lg shadow-sm">
-        <div className="px-6 py-4 border-b border-gray-200">
-          <h2 className="text-lg font-semibold text-gray-900">Clinical Records</h2>
-          <p className="text-sm text-gray-500 mt-1">{filteredRecords.length} records found</p>
+      <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+        <div className="px-8 py-6 border-b border-gray-200 bg-gradient-to-r from-gray-50 to-white">
+          <h2 className="text-xl font-bold text-[#3e454b] flex items-center">
+            <span className="w-1.5 h-6 bg-[#b36f49] rounded-full mr-3"></span>
+            Clinical Records
+          </h2>
+          <p className="text-sm text-gray-600 mt-2 ml-5">{filteredRecords.length} records found</p>
         </div>
 
         <div className="divide-y divide-gray-100">
           {filteredRecords.length === 0 ? (
-            <div className="px-6 py-12 text-center">
-              <FileText className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-              <p className="text-gray-500">No records found</p>
-              <p className="text-sm text-gray-400 mt-1">Try a different search term</p>
+            <div className="px-6 py-16 text-center">
+              <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center mx-auto mb-4">
+                <FileText className="w-8 h-8 text-gray-400" />
+              </div>
+              <p className="text-lg font-semibold text-gray-700">No records found</p>
+              <p className="text-sm text-gray-500 mt-2">Try a different search term</p>
             </div>
           ) : (
             filteredRecords.map((record) => (
               <div
                 key={record.id}
-                className="px-6 py-4 hover:bg-gray-50 transition-colors"
+                className="px-8 py-5 hover:bg-gradient-to-r hover:from-orange-50/30 hover:to-transparent transition-all duration-200 border-l-4 border-transparent hover:border-[#b36f49]"
               >
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex-1 min-w-0">
@@ -112,7 +117,7 @@ export function ClinicalRecords({ records, onViewRecord, onDownloadPDF, onEditRe
                         variant="outline"
                         size="sm"
                         onClick={() => onEditRecord(record)}
-                        className="border-[#b36f49] text-[#b36f49] hover:bg-[#b36f49] hover:text-white"
+                        className="border-[#b36f49] text-[#b36f49] hover:bg-[#b36f49] hover:text-white transition-all duration-200 shadow-sm hover:shadow"
                       >
                         <Edit className="w-4 h-4 mr-1.5" />
                         Edit
@@ -122,7 +127,7 @@ export function ClinicalRecords({ records, onViewRecord, onDownloadPDF, onEditRe
                       variant="outline"
                       size="sm"
                       onClick={() => onViewRecord(record.id)}
-                      className="border-gray-300"
+                      className="border-gray-300 hover:border-gray-400 transition-all duration-200 shadow-sm hover:shadow"
                     >
                       <Eye className="w-4 h-4 mr-1.5" />
                       View
@@ -131,7 +136,7 @@ export function ClinicalRecords({ records, onViewRecord, onDownloadPDF, onEditRe
                       variant="default"
                       size="sm"
                       onClick={() => onDownloadPDF(record)}
-                      className="bg-[#b36f49] hover:bg-[#c67f5f] text-white"
+                      className="bg-gradient-to-br from-[#b36f49] to-[#c67f5f] hover:from-[#c67f5f] hover:to-[#b36f49] text-white transition-all duration-200 shadow-sm hover:shadow"
                     >
                       <Download className="w-4 h-4 mr-1.5" />
                       PDF

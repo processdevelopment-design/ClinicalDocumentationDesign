@@ -80,9 +80,8 @@ export function PatientInformation({
   };
 
   return (
-    <Card className="p-8 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200">
-      <h2 className="text-xl font-bold text-[#3e454b] mb-8 flex items-center">
-        <span className="w-1.5 h-6 bg-[#b36f49] rounded-full mr-3"></span>
+    <Card className="p-6">
+      <h2 className="text-lg font-semibold text-gray-900 mb-6">
         Patient Information
       </h2>
 
@@ -267,18 +266,18 @@ export function PatientInformation({
           </Select>
         </div>
 
-        <div className="space-y-3 md:col-span-2">
-          <Label className="text-sm font-semibold">Diagnostic Area</Label>
+        <div className="space-y-2 md:col-span-2">
+          <Label>Diagnostic Area</Label>
           <div className="flex flex-wrap gap-2">
             {BODY_AREAS.map((area) => (
               <button
                 key={area}
                 type="button"
                 onClick={() => toggleBodyArea(area)}
-                className={`px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 ${
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
                   formData.selectedBodyAreas.includes(area)
-                    ? "bg-gradient-to-br from-[#b36f49] to-[#c67f5f] text-white shadow-sm scale-105"
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200 hover:shadow-sm"
+                    ? "bg-[#b36f49] text-white border-2 border-[#b36f49]"
+                    : "bg-gray-100 text-gray-700 border-2 border-transparent hover:bg-[#c3bbb5] hover:text-gray-800"
                 }`}
               >
                 {area}

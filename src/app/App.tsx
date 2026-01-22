@@ -584,12 +584,12 @@ export default function App() {
   };
 
   return (
-    <div className="flex h-screen bg-gray-50 overflow-hidden">
+    <div className="flex h-screen bg-gray-50">
       <Sidebar activeItem={activeItem} onItemClick={setActiveItem} />
-
-      <div className="flex-1 flex flex-col min-w-0">
-        {/* Header */}
-        <header className="bg-[#3e454b] border-b border-gray-700 px-8 py-4 flex items-center justify-between flex-shrink-0 shadow-lg">
+      
+      <div className="flex-1 flex flex-col overflow-hidden">
+        {/* Sticky Header */}
+        <header className="bg-[#3e454b] border-b border-gray-700 px-8 py-4 flex items-center justify-between sticky top-0 z-10 shadow-lg">
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-lg bg-white flex items-center justify-center p-1.5">
@@ -627,21 +627,21 @@ export default function App() {
           </div>
           {activeItem !== 'pt-database' && activeItem !== 'patient-database' && activeItem !== 'clinical-records' && activeItem !== 'create-module' && (
             <div className="flex items-center gap-3">
-              <Button variant="outline" onClick={handleViewHistory} className="border-gray-500 text-gray-200 hover:bg-[#4a5259] hover:text-white transition-all duration-200 shadow-sm hover:shadow">
+              <Button variant="outline" onClick={handleViewHistory} className="border-gray-500 text-gray-200 hover:bg-[#4a5259] hover:text-white">
                 <History className="w-4 h-4 mr-2" />
                 View History
               </Button>
-              <Button variant="outline" onClick={handleSaveDraft} className="border-gray-500 text-gray-200 hover:bg-[#4a5259] hover:text-white transition-all duration-200 shadow-sm hover:shadow">
+              <Button variant="outline" onClick={handleSaveDraft} className="border-gray-500 text-gray-200 hover:bg-[#4a5259] hover:text-white">
                 <Save className="w-4 h-4 mr-2" />
                 Save Draft
               </Button>
               {selectedFormType === 'PT Notes' ? (
-                <Button onClick={handleSubmitPTNote} className="bg-gradient-to-r from-[#b36f49] to-[#c67f5f] hover:from-[#c67f5f] hover:to-[#b36f49] text-white transition-all duration-200 shadow-md hover:shadow-lg">
+                <Button onClick={handleSubmitPTNote} className="bg-[#b36f49] hover:bg-[#c67f5f] text-white">
                   <Send className="w-4 h-4 mr-2" />
                   Submit Note
                 </Button>
               ) : (
-                <Button onClick={handleSubmit} className="bg-gradient-to-r from-[#b36f49] to-[#c67f5f] hover:from-[#c67f5f] hover:to-[#b36f49] text-white transition-all duration-200 shadow-md hover:shadow-lg">
+                <Button onClick={handleSubmit} className="bg-[#b36f49] hover:bg-[#c67f5f] text-white">
                   <Send className="w-4 h-4 mr-2" />
                   Submit Evaluation
                 </Button>
@@ -650,21 +650,21 @@ export default function App() {
           )}
           {activeItem === 'create-module' && selectedPatient && selectedFormType && (
             <div className="flex items-center gap-3">
-              <Button variant="outline" onClick={handleViewHistory} className="border-gray-500 text-gray-200 hover:bg-[#4a5259] hover:text-white transition-all duration-200 shadow-sm hover:shadow">
+              <Button variant="outline" onClick={handleViewHistory} className="border-gray-500 text-gray-200 hover:bg-[#4a5259] hover:text-white">
                 <History className="w-4 h-4 mr-2" />
                 View History
               </Button>
-              <Button variant="outline" onClick={handleSaveDraft} className="border-gray-500 text-gray-200 hover:bg-[#4a5259] hover:text-white transition-all duration-200 shadow-sm hover:shadow">
+              <Button variant="outline" onClick={handleSaveDraft} className="border-gray-500 text-gray-200 hover:bg-[#4a5259] hover:text-white">
                 <Save className="w-4 h-4 mr-2" />
                 Save Draft
               </Button>
               {selectedFormType === 'PT Notes' ? (
-                <Button onClick={handleSubmitPTNote} className="bg-gradient-to-r from-[#b36f49] to-[#c67f5f] hover:from-[#c67f5f] hover:to-[#b36f49] text-white transition-all duration-200 shadow-md hover:shadow-lg">
+                <Button onClick={handleSubmitPTNote} className="bg-[#b36f49] hover:bg-[#c67f5f] text-white">
                   <Send className="w-4 h-4 mr-2" />
                   Submit Note
                 </Button>
               ) : (
-                <Button onClick={handleSubmit} className="bg-gradient-to-r from-[#b36f49] to-[#c67f5f] hover:from-[#c67f5f] hover:to-[#b36f49] text-white transition-all duration-200 shadow-md hover:shadow-lg">
+                <Button onClick={handleSubmit} className="bg-[#b36f49] hover:bg-[#c67f5f] text-white">
                   <Send className="w-4 h-4 mr-2" />
                   Submit Evaluation
                 </Button>
@@ -693,11 +693,11 @@ export default function App() {
                     
                     {/* Bottom Action Bar */}
                     <div className="flex justify-end gap-3 pb-8 pt-4 border-t border-gray-200">
-                      <Button variant="outline" onClick={handleSaveDraft} size="lg" className="transition-all duration-200 shadow-sm hover:shadow">
+                      <Button variant="outline" onClick={handleSaveDraft} size="lg">
                         <Save className="w-4 h-4 mr-2" />
                         Save Draft
                       </Button>
-                      <Button onClick={handleSubmitPTNote} size="lg" className="bg-gradient-to-r from-[#b36f49] to-[#c67f5f] hover:from-[#c67f5f] hover:to-[#b36f49] text-white transition-all duration-200 shadow-md hover:shadow-lg">
+                      <Button onClick={handleSubmitPTNote} size="lg" className="bg-[#b36f49] hover:bg-[#c67f5f] text-white">
                         <Send className="w-4 h-4 mr-2" />
                         Submit Note
                       </Button>
@@ -717,11 +717,11 @@ export default function App() {
 
                     {/* Bottom Action Bar */}
                     <div className="flex justify-end gap-3 pb-8 pt-4 border-t border-gray-200">
-                      <Button variant="outline" onClick={handleSaveDraft} size="lg" className="transition-all duration-200 shadow-sm hover:shadow">
+                      <Button variant="outline" onClick={handleSaveDraft} size="lg">
                         <Save className="w-4 h-4 mr-2" />
                         Save Draft
                       </Button>
-                      <Button onClick={handleSubmit} size="lg" className="bg-gradient-to-r from-[#b36f49] to-[#c67f5f] hover:from-[#c67f5f] hover:to-[#b36f49] text-white transition-all duration-200 shadow-md hover:shadow-lg">
+                      <Button onClick={handleSubmit} size="lg" className="bg-[#b36f49] hover:bg-[#c67f5f] text-white">
                         <Send className="w-4 h-4 mr-2" />
                         Submit Evaluation
                       </Button>

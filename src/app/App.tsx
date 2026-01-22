@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Sidebar } from '@/app/components/Sidebar';
 import { PTDatabase, PhysicalTherapist } from '@/app/components/PTDatabase';
 import { PatientDatabase, Patient } from '@/app/components/PatientDatabase';
@@ -19,98 +19,21 @@ import { FormData, generateComprehensivePDF } from '@/app/utils/pdfGenerator';
 import { generatePTNotesPDF } from '@/app/utils/ptNotesPDFGenerator';
 import { generateDischargeSummaryPDF } from '@/app/utils/dischargeSummaryPDFGenerator';
 import { Toaster, toast } from 'sonner';
+import { supabase } from '@/lib/supabase';
 
 export default function App() {
   const [activeItem, setActiveItem] = useState('create-module');
+  const [isLoading, setIsLoading] = useState(true);
   
   // Create Module State
   const [selectedPatient, setSelectedPatient] = useState<string>('');
   const [selectedFormType, setSelectedFormType] = useState<FormType>(null);
   
   // PT Database State
-  const [therapists, setTherapists] = useState<PhysicalTherapist[]>([
-    {
-      id: '1',
-      name: 'Dr. Emily Rodriguez',
-      licenseNumber: 'PT-CA-45892',
-      position: 'Main Branch',
-    },
-    {
-      id: '2',
-      name: 'Dr. Michael Chen',
-      licenseNumber: 'PT-CA-45893',
-      position: 'Downtown Branch',
-    },
-  ]);
+  const [therapists, setTherapists] = useState<PhysicalTherapist[]>([]);
 
   // Patient Database State
-  const [patients, setPatients] = useState<Patient[]>([
-    {
-      id: '1',
-      patientName: 'Maria Santos Rodriguez',
-      patientId: 'PT-2026-0089',
-      dateOfBirth: '1985-03-15',
-      sex: 'Female',
-      referringPhysician: 'Dr. James Chen',
-      prescribedSessions: 12,
-      diagnoses: ['Chronic Lower Back Pain', 'Lumbar Disc Herniation L4-L5'],
-      program: 'Orthopedic - Non-Work Related',
-      bodyAreasInvolved: ['Lumbar Spine', 'Right Hip'],
-      lastEditDate: '2026-01-15',
-    },
-    {
-      id: '2',
-      patientName: 'Robert Johnson',
-      patientId: 'PT-2026-0112',
-      dateOfBirth: '1978-07-22',
-      sex: 'Male',
-      referringPhysician: 'Dr. Sarah Williams',
-      prescribedSessions: 16,
-      diagnoses: ['Rotator Cuff Tear', 'Post-Surgical Right Shoulder'],
-      program: 'Post-Surgical Rehabilitation',
-      bodyAreasInvolved: ['Right Shoulder'],
-      lastEditDate: '2026-01-16',
-    },
-    {
-      id: '3',
-      patientName: 'Jennifer Lee',
-      patientId: 'PT-2026-0145',
-      dateOfBirth: '1992-11-08',
-      sex: 'Female',
-      referringPhysician: 'Dr. Michael Brown',
-      prescribedSessions: 10,
-      diagnoses: ['ACL Reconstruction Post-Op', 'Left Knee Pain'],
-      program: 'Sports Rehabilitation',
-      bodyAreasInvolved: ['Left Knee'],
-      lastEditDate: '2026-01-17',
-    },
-    {
-      id: '4',
-      patientName: 'David Martinez',
-      patientId: 'PT-2026-0178',
-      dateOfBirth: '1965-05-30',
-      sex: 'Male',
-      referringPhysician: 'Dr. Emily Davis',
-      prescribedSessions: 20,
-      diagnoses: ['Stroke - Left Hemiparesis', 'Balance Impairment'],
-      program: 'Neurological Rehabilitation',
-      bodyAreasInvolved: ['Cervical Spine', 'Left Shoulder', 'Left Hip', 'Left Knee'],
-      lastEditDate: '2026-01-18',
-    },
-    {
-      id: '5',
-      patientName: 'Susan Thompson',
-      patientId: 'PT-2026-0201',
-      dateOfBirth: '1988-09-12',
-      sex: 'Female',
-      referringPhysician: 'Dr. Robert Anderson',
-      prescribedSessions: 8,
-      diagnoses: ['Carpal Tunnel Syndrome', 'Right Wrist Tendinitis'],
-      program: 'Orthopedic - Work Related',
-      bodyAreasInvolved: ['Right Wrist/Hand'],
-      lastEditDate: '2026-01-19',
-    },
-  ]);
+  const [patients, setPatients] = useState<Patient[]>([]);
 
   // PT Notes State
   const [ptNotesData, setPTNotesData] = useState<PTNotesData>({
@@ -210,17 +133,71 @@ export default function App() {
     branch: '',
   });
 
-  const [clinicalRecords, setClinicalRecords] = useState<ClinicalRecord[]>([
-    {
-      id: '1',
-      noteCode: 'IE-PT2026-0089-20260119',
-      patientId: 'PT-2026-0089',
-      patientName: 'Maria Santos Rodriguez',
-      dateCreated: '2026-01-19',
-      type: 'Initial Evaluation',
-      status: 'Submitted',
-    },
-  ]);
+  const [clinicalRecords, setClinicalRecords] = useState<ClinicalRecord[]>([]);
+
+  // Fetch data from Supabase on mount
+  useEffect(() => {
+    fetchAllData();
+  }, []);
+
+  const fetchAllData = async () => {
+    setIsLoading(true);
+    try {
+      const [therapistsResult, patientsResult, recordsResult] = await Promise.all([
+        supabase.from('physical_therapists').select('*').order('created_at', { ascending: false }),
+        supabase.from('patients').select('*').order('created_at', { ascending: false }),
+        supabase.from('clinical_records').select('*').order('created_at', { ascending: false }),
+      ]);
+
+      if (therapistsResult.data) {
+        const mappedTherapists: PhysicalTherapist[] = therapistsResult.data.map(t => ({
+          id: t.id,
+          name: t.name,
+          licenseNumber: t.license_number,
+          position: t.position,
+        }));
+        setTherapists(mappedTherapists);
+      }
+
+      if (patientsResult.data) {
+        const mappedPatients: Patient[] = patientsResult.data.map(p => ({
+          id: p.id,
+          patientName: p.patient_name,
+          patientId: p.patient_id,
+          dateOfBirth: p.date_of_birth,
+          sex: p.sex,
+          referringPhysician: p.referring_provider || '',
+          prescribedSessions: 0,
+          diagnoses: p.diagnosis ? [p.diagnosis] : [],
+          program: '',
+          bodyAreasInvolved: p.selected_body_areas || [],
+          lastEditDate: new Date(p.updated_at).toISOString().slice(0, 10),
+        }));
+        setPatients(mappedPatients);
+      }
+
+      if (recordsResult.data) {
+        const mappedRecords: ClinicalRecord[] = recordsResult.data.map(r => ({
+          id: r.id,
+          noteCode: `${r.form_type.substring(0, 2).toUpperCase()}-${r.record_date}`,
+          patientId: r.patient_id,
+          patientName: '',
+          dateCreated: new Date(r.created_at).toISOString().slice(0, 10),
+          type: r.form_type as any,
+          status: 'Submitted',
+          formData: r.form_data,
+        }));
+        setClinicalRecords(mappedRecords);
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      toast.error('Failed to load data', {
+        description: 'There was an error loading data from the database.',
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const generateNoteCode = () => {
     const today = new Date();
@@ -401,55 +378,162 @@ export default function App() {
   };
 
   // PT Database handlers
-  const handleAddTherapist = (therapist: Omit<PhysicalTherapist, 'id'>) => {
-    const newTherapist: PhysicalTherapist = {
-      ...therapist,
-      id: Date.now().toString(),
-    };
-    setTherapists([...therapists, newTherapist]);
-    toast.success('Therapist added successfully', {
-      description: `${therapist.name} has been added to the database.`,
-    });
+  const handleAddTherapist = async (therapist: Omit<PhysicalTherapist, 'id'>) => {
+    try {
+      const { data, error } = await supabase
+        .from('physical_therapists')
+        .insert({
+          name: therapist.name,
+          license_number: therapist.licenseNumber,
+          position: therapist.position,
+        })
+        .select()
+        .maybeSingle();
+
+      if (error) throw error;
+
+      if (data) {
+        const newTherapist: PhysicalTherapist = {
+          id: data.id,
+          name: data.name,
+          licenseNumber: data.license_number,
+          position: data.position,
+        };
+        setTherapists([newTherapist, ...therapists]);
+        toast.success('Therapist added successfully', {
+          description: `${therapist.name} has been added to the database.`,
+        });
+      }
+    } catch (error) {
+      console.error('Error adding therapist:', error);
+      toast.error('Failed to add therapist', {
+        description: 'There was an error adding the therapist to the database.',
+      });
+    }
   };
 
-  const handleDeleteTherapist = (id: string) => {
-    setTherapists(therapists.filter((t) => t.id !== id));
-    toast.success('Therapist removed', {
-      description: 'The therapist has been removed from the database.',
-    });
+  const handleDeleteTherapist = async (id: string) => {
+    try {
+      const { error } = await supabase
+        .from('physical_therapists')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw error;
+
+      setTherapists(therapists.filter((t) => t.id !== id));
+      toast.success('Therapist removed', {
+        description: 'The therapist has been removed from the database.',
+      });
+    } catch (error) {
+      console.error('Error deleting therapist:', error);
+      toast.error('Failed to delete therapist', {
+        description: 'There was an error removing the therapist from the database.',
+      });
+    }
   };
 
   // Patient Database handlers
-  const handleAddPatient = (patient: Omit<Patient, 'id' | 'lastEditDate'>) => {
-    const today = new Date().toISOString().slice(0, 10);
-    const newPatient: Patient = {
-      ...patient,
-      id: Date.now().toString(),
-      lastEditDate: today,
-    };
-    setPatients([...patients, newPatient]);
-    toast.success('Patient added successfully', {
-      description: `${patient.patientName} has been added to the database.`,
-    });
+  const handleAddPatient = async (patient: Omit<Patient, 'id' | 'lastEditDate'>) => {
+    try {
+      const { data, error } = await supabase
+        .from('patients')
+        .insert({
+          patient_name: patient.patientName,
+          patient_id: patient.patientId,
+          date_of_birth: patient.dateOfBirth,
+          sex: patient.sex,
+          referring_provider: patient.referringPhysician,
+          diagnosis: patient.diagnoses.join(', '),
+          selected_body_areas: patient.bodyAreasInvolved,
+        })
+        .select()
+        .maybeSingle();
+
+      if (error) throw error;
+
+      if (data) {
+        const today = new Date().toISOString().slice(0, 10);
+        const newPatient: Patient = {
+          id: data.id,
+          patientName: data.patient_name,
+          patientId: data.patient_id,
+          dateOfBirth: data.date_of_birth,
+          sex: data.sex,
+          referringPhysician: data.referring_provider || '',
+          prescribedSessions: 0,
+          diagnoses: data.diagnosis ? [data.diagnosis] : [],
+          program: '',
+          bodyAreasInvolved: data.selected_body_areas || [],
+          lastEditDate: today,
+        };
+        setPatients([newPatient, ...patients]);
+        toast.success('Patient added successfully', {
+          description: `${patient.patientName} has been added to the database.`,
+        });
+      }
+    } catch (error) {
+      console.error('Error adding patient:', error);
+      toast.error('Failed to add patient', {
+        description: 'There was an error adding the patient to the database.',
+      });
+    }
   };
 
-  const handleEditPatient = (id: string, patient: Omit<Patient, 'id' | 'lastEditDate'>) => {
-    const today = new Date().toISOString().slice(0, 10);
-    setPatients(patients.map((p) => 
-      p.id === id 
-        ? { ...patient, id, lastEditDate: today }
-        : p
-    ));
-    toast.success('Patient updated successfully', {
-      description: `${patient.patientName} has been updated.`,
-    });
+  const handleEditPatient = async (id: string, patient: Omit<Patient, 'id' | 'lastEditDate'>) => {
+    try {
+      const { error } = await supabase
+        .from('patients')
+        .update({
+          patient_name: patient.patientName,
+          patient_id: patient.patientId,
+          date_of_birth: patient.dateOfBirth,
+          sex: patient.sex,
+          referring_provider: patient.referringPhysician,
+          diagnosis: patient.diagnoses.join(', '),
+          selected_body_areas: patient.bodyAreasInvolved,
+          updated_at: new Date().toISOString(),
+        })
+        .eq('id', id);
+
+      if (error) throw error;
+
+      const today = new Date().toISOString().slice(0, 10);
+      setPatients(patients.map((p) =>
+        p.id === id
+          ? { ...patient, id, lastEditDate: today }
+          : p
+      ));
+      toast.success('Patient updated successfully', {
+        description: `${patient.patientName} has been updated.`,
+      });
+    } catch (error) {
+      console.error('Error updating patient:', error);
+      toast.error('Failed to update patient', {
+        description: 'There was an error updating the patient in the database.',
+      });
+    }
   };
 
-  const handleDeletePatient = (id: string) => {
-    setPatients(patients.filter((p) => p.id !== id));
-    toast.success('Patient removed', {
-      description: 'The patient has been removed from the database.',
-    });
+  const handleDeletePatient = async (id: string) => {
+    try {
+      const { error } = await supabase
+        .from('patients')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw error;
+
+      setPatients(patients.filter((p) => p.id !== id));
+      toast.success('Patient removed', {
+        description: 'The patient has been removed from the database.',
+      });
+    } catch (error) {
+      console.error('Error deleting patient:', error);
+      toast.error('Failed to delete patient', {
+        description: 'There was an error removing the patient from the database.',
+      });
+    }
   };
 
   // PT Notes handlers

@@ -1059,7 +1059,7 @@ export function getSampleFormData(): FormData {
       "Rotator cuff tendinitis",
     ],
     categoricalDiagnosis: "Shoulder Impingement, Rotator Cuff Injury",
-    caseType: "Orthopedic Rehabilitation",
+    caseType: "Standard Physical Therapy Program",
     bodyAreas: ["Shoulder", "Upper Back"],
     selectedBodyAreas: ["Shoulder"],
 

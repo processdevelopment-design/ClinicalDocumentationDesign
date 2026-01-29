@@ -17,16 +17,17 @@ import { Plus, X } from "lucide-react";
 import { FormData } from "@/app/utils/pdfGenerator";
 
 const BODY_AREAS = [
+  "Head and Face",
+  "TMJ",
+  "Cervical",
+  "Thoracic",
+  "Lumbar",
   "Shoulder",
-  "Knee",
-  "Hip",
-  "Upper Back",
-  "Lower Back",
   "Elbow",
-  "Wrist",
-  "Ankle",
-  "PhysioBeauty",
-  "Overall Conditioning",
+  "Wrist and Hand",
+  "Pelvis, Hip and Sacrum",
+  "Upper Leg and Knee",
+  "Lower Leg, Ankle and Foot",
 ];
 
 const CATEGORICAL_DIAGNOSES = [
@@ -299,32 +300,62 @@ export function PatientInformation({
         <div className="space-y-2 md:col-span-2">
           <Label>Program / Case Type</Label>
           <Select
-            defaultValue="orthopedic"
+            value={formData.caseType}
             onValueChange={(value) =>
               setFormData({ ...formData, caseType: value })
             }
           >
             <SelectTrigger>
-              <SelectValue placeholder="Select case type" />
+              <SelectValue placeholder="Select program" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="orthopedic">
-                Orthopedic Rehabilitation
+              <SelectItem value="Standard Physical Therapy Program">
+                Standard Physical Therapy Program
               </SelectItem>
-              <SelectItem value="sports">
-                Sports Injury
+              <SelectItem value="Advance Physical Therapy Program">
+                Advance Physical Therapy Program
               </SelectItem>
-              <SelectItem value="post-surgical">
-                Post-Surgical
+              <SelectItem value="Advance Physical Therapy Program: Back Care">
+                Advance Physical Therapy Program: Back Care
               </SelectItem>
-              <SelectItem value="neurological">
-                Neurological
+              <SelectItem value="Advance Physical Therapy Program: Women's Care">
+                Advance Physical Therapy Program: Women's Care
               </SelectItem>
-              <SelectItem value="geriatric">
-                Geriatric
+              <SelectItem value="Advance Physical Therapy Program: Pediatric Care">
+                Advance Physical Therapy Program: Pediatric Care
               </SelectItem>
-              <SelectItem value="pediatric">
-                Pediatric
+              <SelectItem value="Myofascial RehabTherapy">
+                Myofascial RehabTherapy
+              </SelectItem>
+              <SelectItem value="Conditioning Program">
+                Conditioning Program
+              </SelectItem>
+              <SelectItem value="Vitalis Program">
+                Vitalis Program
+              </SelectItem>
+              <SelectItem value="Sport Wellness Therapy">
+                Sport Wellness Therapy
+              </SelectItem>
+              <SelectItem value="Physique Enhancement Treatment">
+                Physique Enhancement Treatment
+              </SelectItem>
+              <SelectItem value="CranioFacial Toning Treatment">
+                CranioFacial Toning Treatment
+              </SelectItem>
+              <SelectItem value="Express Slimming Program">
+                Express Slimming Program
+              </SelectItem>
+              <SelectItem value="Toned Neck Treatment">
+                Toned Neck Treatment
+              </SelectItem>
+              <SelectItem value="Collagen Induction PT Augmented Program">
+                Collagen Induction PT Augmented Program
+              </SelectItem>
+              <SelectItem value="Physiaré IV Rehab with Stem Cell">
+                Physiaré IV Rehab with Stem Cell
+              </SelectItem>
+              <SelectItem value="PT-Augmented IV Rehab">
+                PT-Augmented IV Rehab
               </SelectItem>
             </SelectContent>
           </Select>

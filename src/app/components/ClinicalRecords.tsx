@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Search, FileText, Download, Eye, Edit } from 'lucide-react';
+import { Search, FileText, Download, Eye, Edit, Send } from 'lucide-react';
 import { Input } from '@/app/components/ui/input';
 import { Button } from '@/app/components/ui/button';
 import { FormData } from '@/app/utils/pdfGenerator';
@@ -126,6 +126,15 @@ export function ClinicalRecords({ records, onViewRecord, onDownloadPDF, onEditRe
                     >
                       <Eye className="w-4 h-4 mr-1.5" />
                       View
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {/* TODO: Implement PULSE functionality */}}
+                      className="border-green-600 text-green-600 hover:bg-green-600 hover:text-white"
+                    >
+                      <Send className="w-4 h-4 mr-1.5" />
+                      PULSE
                     </Button>
                     <Button
                       variant="default"
